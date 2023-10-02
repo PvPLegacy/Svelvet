@@ -307,7 +307,9 @@
 		// And it can't have multiple connections
 		// And there isn't an active connection being made
 		// Then this is a disconnection event
-		if ($connectedAnchors?.size && !multiple && !$connectingFrom) return disconnectEdge();
+
+		// Changing this behavior. Input nodes will always disconnect, unless they have no connections
+		if ($connectedAnchors?.size && input && !$connectingFrom) return disconnectEdge();
 
 		// If there isn't an active connection being made, start a new edge
 		if (!$connectingFrom) return startEdge();
@@ -465,15 +467,31 @@
 		disconnectStore();
 	}
 
+	// Similar to destroy, but only destroys a single edge, and leaves the other connections intact
+	function destroySingle(index: number) {
+		edgeStore.delete('cursor');
+
+		// Get all edges connected to this anchor
+		const connections = edgeStore.match(anchor);
+
+		// Delete them from the store
+		edgeStore.delete(connections[index]);
+
+		clearLinking(false);
+		disconnectStore();
+	}
+
 	// Disconnect edge and create a new cursor edge
 	function disconnectEdge() {
-		if (get(anchor.connected).size > 1) return;
-
+		// if (get(anchor.connected).size > 1) return;
+		
+		// Changing this behavior. Just disconnect the topmost connection
+		// TODO better system?
 		const source = Array.from(get(anchor.connected))[0];
 
 		if (source.type === 'input') return;
 
-		destroy();
+		destroySingle(0);
 
 		if (source.type === 'output') {
 			createCursorEdge(source, cursorAnchor, true);
