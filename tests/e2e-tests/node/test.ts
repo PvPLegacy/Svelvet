@@ -62,7 +62,7 @@ test('default node is created with correct id and inputs', async ({ page }) => {
 	await expect(anchors.length).toBe(3);
 });
 
-test('shift-click and drag selects nodes', async ({ page }) => {
+test('meta-click and drag selects nodes', async ({ page }) => {
 	await page.goto(testRoute);
 
 	// Locate the nodes you want to test
@@ -83,7 +83,7 @@ test('shift-click and drag selects nodes', async ({ page }) => {
 	await page.mouse.move(startX, startY);
 	await page.mouse.down();
 	await page.mouse.up();
-	await page.keyboard.down('Shift');
+	await page.keyboard.down('Meta');
 	await page.mouse.down();
 	await page.mouse.move(endX, endY);
 	await page.mouse.up();

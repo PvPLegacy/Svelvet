@@ -60,6 +60,8 @@
 	const selectedNodes = selectedNodeGroup.nodes;
 	const resized = writable(false);
 
+	const modifier = getContext<"meta" | "alt" | "ctrl" | "shift">('modifier');
+
 	// Reactive variables
 	// let collapsed = false; //not being used
 
@@ -191,11 +193,11 @@
 		}
 
 		// If you click on a node that is already selected
-		if (!e.shiftKey && selected) {
+		if (!e[`${modifier}Key`] && selected) {
 			$activeGroup = 'selected';
 		} else {
 			// If you click on a new node outside of the current group, clear the group
-			if (!e.shiftKey && !selected && !e.shiftKey) {
+			if (!e[`${modifier}Key`] && !selected) {
 				$selectedNodes.clear();
 				$selectedNodes = $selectedNodes;
 			}

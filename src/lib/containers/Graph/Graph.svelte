@@ -139,6 +139,9 @@
 	setContext('nodeStore', graph.nodes);
 	setContext('mounted', mounted);
 
+	// Pass modifier key to children
+	setContext('modifier', modifier);
+
 	// Lifecycle methods
 	onMount(() => {
 		updateGraphDimensions();
@@ -260,7 +263,7 @@
 		isMovable = false;
 		$tracking = false;
 
-		if (!e.shiftKey) {
+		if (!e[`${modifier}Key`]) {
 			connectingFrom.set(null);
 		}
 
@@ -276,7 +279,8 @@
 
 		$initialClickPosition = get(cursor);
 
-		if (e.shiftKey || e.metaKey) {
+		
+		if (e[`${modifier}Key`]) {
 			e.preventDefault();
 			selecting = true;
 			const { top, left } = dimensions;
@@ -289,12 +293,13 @@
 			} else {
 				creating = false;
 			}
-
-			if (e.metaKey && !e.shiftKey) {
-				adding = true;
-			} else {
+			
+			// Disable groups for now
+			// if (e.metaKey && !e.shiftKey) {
+			// 	adding = true;
+			// } else {
 				adding = false;
-			}
+			// }
 		} else {
 			isMovable = true;
 			$selected = new Set();
@@ -358,8 +363,10 @@
 			zoomAndTranslate(1, graph.dimensions, graph.transforms, ZOOM_INCREMENT);
 		} else if (key === '0') {
 			fitIntoView();
-		} else if (key === 'Control') {
-			$groups['selected'].nodes.set(new Set());
+	
+			// I'm not sure why this is here
+			// } else if (key === 'Control') {
+			// 	$groups['selected'].nodes.set(new Set());
 		} else if (code === 'KeyD' && e[`${modifier}Key`]) {
 			duplicate.set(true);
 			setTimeout(() => {
