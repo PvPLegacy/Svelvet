@@ -44,9 +44,6 @@ export function createAnchor(
 	const recalculatePosition = () => {
 		const anchorElement = document.getElementById(id);
 
-		const direction = get(directionStore);
-		const vector = directionVectors[direction];
-
 		if (!anchorElement) return;
 		const { x, y, width, height } = anchorElement.getBoundingClientRect();
 		const oldOffset = get(offset);
@@ -57,8 +54,8 @@ export function createAnchor(
 		const deltaY = scaled.y - oldPosition.y;
 
 		offset.set({
-			x: oldOffset.x + deltaX + width / scale / 2 + (vector.x * width) / scale / 2,
-			y: oldOffset.y + deltaY + height / scale / 2 + (vector.y * height) / scale / 2
+			x: oldOffset.x + deltaX + width / scale / 2 + scale / 2,
+			y: oldOffset.y + deltaY + height / scale / 2 + scale / 2
 		});
 	};
 

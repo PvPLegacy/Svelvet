@@ -40,7 +40,7 @@ test('anchors can be connected and event fires', async ({ page }) => {
 
 	const newEdge = page.locator('[id="A-1/N-node2+A-2/N-node1"]');
 
-	await expect(newEdge).toHaveAttribute('d', 'M 206, 50 C 250, 50 250, 350 294, 350');
+	await expect(newEdge).toHaveAttribute('d', 'M 200.5, 50.5 C 250.5, 50.5 250.5, 350.5 300.5, 350.5');
 	//await expect(newEdge).toHaveAttribute('style', 'stroke: white; stroke-width: 2px;');
 	await expect(newEdge).toHaveCSS('stroke', 'rgb(255, 255, 255)');
 	await expect(newEdge).toHaveCSS('stroke-width', '2px');

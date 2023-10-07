@@ -11,7 +11,7 @@ test('custom edges are rendered correctly and labels can be interacted with', as
 
 	const newEdge = page.locator('[id="A-1/N-node1+A-2/N-node2"]');
 
-	await expect(newEdge).toHaveAttribute('d', 'M 706, 350 C 1062, 350 -362, 50 -6, 50');
+	await expect(newEdge).toHaveAttribute('d', 'M 700.5, 350.5 C 1050.5, 350.5 -349.5, 50.5 0.5, 50.5');
 	await expect(newEdge).toHaveCSS('stroke', 'rgb(255, 255, 0)');
 	await expect(newEdge).toHaveCSS('stroke-width', '4px');
 
