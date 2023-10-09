@@ -252,6 +252,14 @@
 
 		if (!parentElement) return;
 
+		// BUG: otherElement (and parentElement) will be ANYTHING that is clicked on, not just an anchor
+		// Regex the ID to make sure it's an anchor
+		if (!/^(A-[oO]\d+)|(N-[nN]\d+)$/.test(parentElement.id)) {
+			edgeStore.delete('cursor');
+			clearLinking(false);
+			return;
+		}
+
 		const compoundId: AnchorKey = parentElement.id as AnchorKey;
 
 		const nodeId = compoundId.split('/')[1] as NodeKey;
@@ -280,7 +288,7 @@
 	function handleMouseUp(e: MouseEvent | TouchEvent) {
 		// Touchend events fire on the original element rather than the "curent one"
 		// So we need to check for this case and retieve the anchor to connect to
-		if ('changedTouches' in e && connecting) {
+		if ('changedTouches' in e) {
 			touchBasedConnection(e);
 			return;
 		}
