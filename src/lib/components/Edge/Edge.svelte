@@ -9,18 +9,6 @@
 	import type { WritableEdge } from '$lib/types';
 
 	let animationFrameId: number;
-
-	function moveEdge(edgeElement: SVGElement) {
-		const parentNode = edgeElement.parentNode;
-		if (!parentNode) return;
-		// Remove the anchor from its current container
-		parentNode.removeChild(edgeElement);
-
-		// Add the anchor to the new container
-		const newContainer = document.querySelector(`.svelvet-graph-wrapper`);
-		if (!newContainer) return;
-		newContainer.appendChild(edgeElement);
-	}
 </script>
 
 <script lang="ts">
@@ -299,6 +287,19 @@
 			: raiseEdgesOnSelect === 'target'
 			? $targetZIndex - 1
 			: 0;
+
+	const graph = getContext<Graph>('graph');
+	function moveEdge(edgeElement: SVGElement) {
+		const parentNode = edgeElement.parentNode;
+		if (!parentNode) return;
+		// Remove the anchor from its current container
+		parentNode.removeChild(edgeElement);
+
+		// Add the anchor to the new container
+		const newContainer = document.querySelector(`#${graph.id} > .svelvet-graph-wrapper`);
+		if (!newContainer) return;
+		newContainer.appendChild(edgeElement);
+	}
 </script>
 
 {#if source && target}

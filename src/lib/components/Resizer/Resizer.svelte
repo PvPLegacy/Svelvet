@@ -123,7 +123,7 @@
 
 	onMount(() => {
 		try {
-			DOMnode = document.querySelector(`#${node.id}`) as HTMLElement;
+			DOMnode = document.querySelector(`#${graph.id} #${node.id}`) as HTMLElement;
 			if (DOMnode) [minWidth, minHeight] = calculateFitContentWidth(DOMnode);
 		} catch (e) {
 			// eslint-disable-next-line no-console

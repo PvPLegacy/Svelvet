@@ -11,7 +11,7 @@ export function createAnchor(
 	node: Node,
 	id: AnchorKey,
 	position: XYPair,
-	dimensions: { width: number; height: number },
+	dimensions: { width: number; height: number; },
 	store: Anchor['store'],
 	edge: ComponentType | null,
 	type: 'input' | 'output' | null,
@@ -42,7 +42,7 @@ export function createAnchor(
 	const directionStore = writable(direction || 'self');
 
 	const recalculatePosition = () => {
-		const anchorElement = document.getElementById(id);
+		const anchorElement = document.querySelector(`#${graph.id} #${CSS.escape(id)}`);
 
 		if (!anchorElement) return;
 		const { x, y, width, height } = anchorElement.getBoundingClientRect();
