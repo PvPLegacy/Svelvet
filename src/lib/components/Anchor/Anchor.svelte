@@ -260,6 +260,7 @@
 			return;
 		}
 
+
 		const compoundId: AnchorKey = parentElement.id as AnchorKey;
 
 		const nodeId = compoundId.split('/')[1] as NodeKey;
@@ -615,6 +616,8 @@
 		}
 		return true;
 	};
+
+	let lastHoverDest: HTMLElement | null = null;
 </script>
 
 <div
@@ -626,6 +629,12 @@
 	title={title || ''}
 	on:mouseenter={() => (hovering = true)}
 	on:mouseleave={() => (hovering = false)}
+	on:touchmove={(e) => {
+		const target = document.elementFromPoint(e.changedTouches[0].clientX, e.changedTouches[0].clientY)?.parentElement ?? null;
+		lastHoverDest?.dispatchEvent(new MouseEvent('mouseleave', { bubbles: true }));
+		target?.dispatchEvent(new MouseEvent('mouseenter', { bubbles: true }));
+		lastHoverDest = target;
+		}}
 	on:mousedown|stopPropagation|preventDefault={handleClick}
 	on:mouseup|stopPropagation={handleMouseUp}
 	on:touchstart|stopPropagation|preventDefault={handleClick}
