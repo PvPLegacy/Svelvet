@@ -272,6 +272,8 @@
 		edgeStore.delete('cursor');
 
 		attemptConnection($connectingFrom?.anchor || anchor, connectingAnchor, e);
+
+		hovering = false; // This is to prevent the hover effect from persisting
 	}
 
 	function attemptConnection(source: Anchor, target: Anchor, e: MouseEvent | TouchEvent) {
