@@ -271,7 +271,7 @@
 
 		edgeStore.delete('cursor');
 
-		attemptConnection(anchor, connectingAnchor, e);
+		attemptConnection($connectingFrom?.anchor || anchor, connectingAnchor, e);
 	}
 
 	function attemptConnection(source: Anchor, target: Anchor, e: MouseEvent | TouchEvent) {
