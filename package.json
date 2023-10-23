@@ -1,6 +1,6 @@
 {
 	"name": "@pvplegacy/svelvet",
-	"version": "8.1.7",
+	"version": "8.1.8",
 	"description": "A lightweight Svelte component library for building dynamic, node-based user interfaces",
 	"keywords": [
 		"svelte",
