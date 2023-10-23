@@ -105,7 +105,7 @@
 	let anchorElement: HTMLDivElement;
 	let tracking = false;
 	let hovering = false;
-	let previousConnectionCount = 0;
+	let previousConnectedAnchors = new Set<Anchor>();
 	let type: InputType = input === output ? null : input ? 'input' : 'output';
 	let assignedConnections: Connections = [];
 
@@ -218,10 +218,22 @@
 	// This fires the connection/disconnection events
 	// We track previous connections and fire a correct event accordingly
 	$: if ($connectedAnchors) {
-		if ($connectedAnchors.size < previousConnectionCount) {
-			// Need to add additional detail for disconnections here
-			dispatchDisconnection('disconnection', { node, anchor });
-		} else if ($connectedAnchors.size > previousConnectionCount) {
+		if ($connectedAnchors.size < previousConnectedAnchors.size) {
+			// Find which anchor and node was disconnected
+			const disconnectedAnchor = [...previousConnectedAnchors].find(
+				(connection) => !$connectedAnchors.has(connection)
+			);
+
+			if (disconnectedAnchor) {
+				// Need to add additional detail for disconnections here
+				dispatchDisconnection('disconnection', { 
+					node,
+					anchor,
+					connectedNode: disconnectedAnchor.node,
+					connectedAnchor: disconnectedAnchor
+				});
+			}
+		} else if ($connectedAnchors.size > previousConnectedAnchors.size) {
 			const anchorArray = Array.from($connectedAnchors);
 			const lastConnection = anchorArray[anchorArray.length - 1];
 			dispatchConnection('connection', {
@@ -231,7 +243,7 @@
 				connectedAnchor: lastConnection
 			});
 		}
-		previousConnectionCount = $connectedAnchors.size;
+		previousConnectedAnchors = new Set($connectedAnchors);
 	}
 
 	function touchBasedConnection(e: TouchEvent) {
